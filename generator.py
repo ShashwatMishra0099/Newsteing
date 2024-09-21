@@ -1,6 +1,7 @@
 import logging
-from pyrogram import Client, idle
+from pyrogram import Client, filters, idle
 from pyrogram.errors import ApiIdInvalid, AccessTokenInvalid
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 import config
 
 logging.basicConfig(level=logging.INFO)
