@@ -21,7 +21,7 @@ async def start(bot, msg):
         reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("Generate", callback_data="generate")]])
     )
 
-@app.on_callback_query(filters.callback_data("generate"))
+@app.on_callback_query(filters.regex("generate"))
 async def generate_callback(bot, callback_query):
     await callback_query.message.reply("Please send your phone number in the format: +91 1234567890")
     await bot.ask(callback_query.from_user.id, "Please send your phone number:", filters=filters.text)
