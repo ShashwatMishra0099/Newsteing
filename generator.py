@@ -33,7 +33,7 @@ async def handle_phone_number(_, msg):
     
     try:
         async with Client(":memory:", api_id=config.API_ID, api_hash=config.API_HASH) as client:
-            code = await client.send_code_request(phone_number)
+            await client.send_code_request(phone_number)
             otp_msg = await bot.ask(msg.chat.id, "Please enter the OTP sent to your phone:")
             await client.sign_in(phone_number, otp_msg.text)
             string_session = await client.export_session_string()
@@ -49,5 +49,6 @@ if __name__ == "__main__":
     except (ApiIdInvalid, AccessTokenInvalid):
         print("Invalid API ID or Access Token.")
     finally:
-        app.stop()
+        if app.is_alive():
+            app.stop()
         print("Bot stopped.")
