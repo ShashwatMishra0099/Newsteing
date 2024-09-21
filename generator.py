@@ -1,6 +1,6 @@
 import logging
 from pyrogram import Client, filters, idle
-from pyrogram.errors import ApiIdInvalid, AccessTokenInvalid
+from pyrogram.errors import ApiIdInvalid, AccessTokenInvalid, MessageIdTooLow
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 import config
 
@@ -38,6 +38,8 @@ async def handle_phone_number(_, msg):
             await client.sign_in(phone_number, otp_msg.text)
             string_session = await client.export_session_string()
             await msg.reply(f"Your Pyrogram string session is:\n`{string_session}`", quote=True)
+    except MessageIdTooLow:
+        await msg.reply("Your device's time is out of sync. Please synchronize your device's time and try again.")
     except Exception as e:
         await msg.reply(f"An error occurred: {str(e)}")
 
@@ -49,6 +51,5 @@ if __name__ == "__main__":
     except (ApiIdInvalid, AccessTokenInvalid):
         print("Invalid API ID or Access Token.")
     finally:
-        if app.is_alive():
-            app.stop()
+        app.stop()
         print("Bot stopped.")
